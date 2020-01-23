@@ -8,12 +8,12 @@ schema {
     salt: String!
   }
 
-  type Query {
+  extend type Query {
     users: [User]
     user(id: ID!): User
   }
 
-  type Mutation {
+  extend type Mutation {
     createUser: (id: ID!, firstName: String!, lastName: String!, username: String!, password: String!): User!
   }
 }
