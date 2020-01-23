@@ -1,19 +1,15 @@
-schema {
-  type User {
-    id: ID!
-    firstName: String!
-    lastName: String!
-    username: String!
-    password: String!
-    salt: String!
-  }
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  username: String!
+}
 
-  extend type Query {
-    users: [User]
-    user(id: ID!): User
-  }
+extend type Query {
+  users: [User]
+  user(id: ID!): User
+}
 
-  extend type Mutation {
-    createUser: (id: ID!, firstName: String!, lastName: String!, username: String!, password: String!): User!
-  }
+extend type Mutation {
+  createUser: (id: ID!, firstName: String!, lastName: String!, username: String!, password: String!): User!
 }
