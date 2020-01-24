@@ -1,10 +1,14 @@
-{
+module.exports = 
+{ 
   "development": {
     "username": "postgres",
     "password": null,
     "database": "trainingDatabase",
     "host": "127.0.0.1",
     "dialect": "postgres",
+    "define": {
+      timestamps: false
+    },
     "operatorsAliases": false
   },
   "test": {

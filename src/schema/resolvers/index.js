@@ -10,5 +10,5 @@ fs
   .forEach((file) => {
     resolvers = merge(resolvers, require(path.join(__dirname, file)).default)
   })
-
+console.log(resolvers)
 module.exports = resolvers
