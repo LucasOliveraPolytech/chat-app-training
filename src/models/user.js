@@ -39,8 +39,7 @@ export default (sequelize, DataTypes) => {
     if (!user.password || !user.changed('password')) return user
 
     user.salt = this.getRandomSalt()
-    const hashedPassword = await User.encryptPassword(user.password, user.salt)
-    user.password = hashedPassword
+    user.password = await User.encryptPassword(user.password, user.salt)
   }
 
   User.getRandomSalt = function (bytes = 16) {
@@ -53,7 +52,6 @@ export default (sequelize, DataTypes) => {
 
   User.beforeValidate(User.hashPasswordHook.bind(User))
   User.beforeUpdate(User.hashPasswordHook.bind(User))
-
 
   return User
 }

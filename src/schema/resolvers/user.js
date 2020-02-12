@@ -8,5 +8,5 @@ export default {
 
   Mutation: {
     createUser: userController.createUser
-  },
+  }
 }
