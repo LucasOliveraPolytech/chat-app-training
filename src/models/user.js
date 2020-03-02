@@ -47,10 +47,10 @@ export default (sequelize, DataTypes) => {
   }
 
   User.encryptPassword = function (plainPassword, salt) {
-    return cryptoJS.MD5(plainPassword + salt)
+    return cryptoJS.MD5(plainPassword + salt).toString()
   }
 
-  User.beforeCreate(User.hashPasswordHook.bind(User))
+  User.beforeValidate(User.hashPasswordHook.bind(User))
   User.beforeUpdate(User.hashPasswordHook.bind(User))
 
   return User
