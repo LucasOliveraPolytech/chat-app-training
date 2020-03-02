@@ -1,5 +1,6 @@
 import cryptoJS from 'crypto-js'
 import crypto from 'crypto'
+import * as jwt from 'jsonwebtoken'
 
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('user', {
@@ -30,6 +31,20 @@ export default (sequelize, DataTypes) => {
       allowNull: false
     }
   })
+
+  User.prototype.generateNewJWT = function () {
+    const shortenedUser = {
+      id: this.id,
+      username: this.username,
+      firstName: this.firstName,
+      lastName: this.lastName
+    }
+
+    return jwt.sign(shortenedUser, process.env.TOKEN_SECRET, {
+      sub: this.id,
+      expiresIn: '10d'
+    })
+  }
 
   User.prototype.passwordMatches = function (value) {
     return User.encryptPassword(value) === this.password

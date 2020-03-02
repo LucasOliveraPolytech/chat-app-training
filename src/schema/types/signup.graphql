@@ -1,0 +1,16 @@
+input SignupInput {
+  firstName: String!
+  lastName: String!
+  username: String!
+  password: String!
+}
+
+type AuthenticationResult {
+  user: User
+  jwt: String
+  authError: String
+}
+
+type Mutation {
+  signup(data: SignupInput!): AuthenticationResult!
+}
