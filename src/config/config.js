@@ -6,7 +6,10 @@ module.exports =
     database: 'trainingDatabase',
     host: '127.0.0.1',
     dialect: 'postgres',
-    operatorsAliases: false
+    operatorsAliases: false,
+    define: {
+      freezeTableName: true
+    }
   },
   test: {
     username: 'root',
