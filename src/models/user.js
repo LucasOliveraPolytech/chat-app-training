@@ -48,7 +48,7 @@ export default (sequelize, DataTypes) => {
   }
 
   User.prototype.passwordMatches = function (value) {
-    return User.encryptPassword(value) === this.password
+    return User.encryptPassword(value, this.salt) === this.password
   }
 
   User.hashPasswordHook = async function (user) {
