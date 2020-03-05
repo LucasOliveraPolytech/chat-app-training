@@ -40,10 +40,11 @@ export default (sequelize, DataTypes) => {
       lastName: this.lastName
     }
 
-    return jwt.sign(shortenedUser, process.env.TOKEN_SECRET, {
-      sub: this.id,
-      expiresIn: '10d'
-    })
+    return jwt.sign({ sub: this.id, user: shortenedUser },
+      process.env.TOKEN_SECRET, {
+        expiresIn: '10d'
+      }
+    )
   }
 
   User.prototype.passwordMatches = function (value) {

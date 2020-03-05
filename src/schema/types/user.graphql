@@ -11,5 +11,5 @@ extend type Query {
 }
 
 extend type Mutation {
-  createUser(firstName: String!, lastName: String!, username: String!, password: String!): User!
+  createUser(userData: SignupInput!): User!
 }

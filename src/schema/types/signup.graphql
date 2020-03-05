@@ -11,6 +11,6 @@ type AuthenticationResult {
   authError: String
 }
 
-type Mutation {
-  signup(data: SignupInput!): AuthenticationResult!
+extend type Mutation {
+  signup(userData: SignupInput!): AuthenticationResult!
 }

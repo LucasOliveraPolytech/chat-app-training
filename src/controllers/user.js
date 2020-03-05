@@ -8,6 +8,6 @@ export const getUserById = (parent, userData) => {
   return models.user.findByPk(userData.id)
 }
 
-export const createUser = (parent, userData) => {
+export const createUser = (parent, { userData }) => {
   return models.user.create(userData)
 }
