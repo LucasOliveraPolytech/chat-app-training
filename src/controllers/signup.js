@@ -1,18 +1,8 @@
 import { createUser } from './user'
 
 export const signup = async (parent, signupData) => {
-  const authResult = {
-    user: null,
-    jwt: null,
-    authError: null
-  }
+  const user = await createUser(parent, signupData)
+  const jwt = await user.generateNewJWT()
 
-  try {
-    authResult.user = await createUser(parent, signupData)
-    authResult.jwt = await authResult.user.generateNewJWT()
-  } catch (authError) {
-    authResult.authError = authError
-  }
-
-  return authResult
+  return { user, jwt }
 }

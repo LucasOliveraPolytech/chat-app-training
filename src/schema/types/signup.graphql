@@ -6,9 +6,8 @@ input SignupInput {
 }
 
 type AuthenticationResult {
-  user: User
-  jwt: String
-  authError: String
+  user: User!
+  jwt: String!
 }
 
 extend type Mutation {
