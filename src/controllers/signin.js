@@ -8,18 +8,8 @@ const login = async ({ username, password }) => {
 }
 
 export const signin = async (parent, { userData }) => {
-  const authResult = {
-    user: null,
-    jwt: null,
-    authError: null
-  }
+  const user = await login(userData)
+  const jwt = await user.generateNewJWT()
 
-  try {
-    authResult.user = await login(userData)
-    authResult.jwt = await authResult.user.generateNewJWT()
-  } catch (authError) {
-    authResult.authError = authError
-  }
-
-  return authResult
+  return { user, jwt }
 }
