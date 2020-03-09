@@ -1,6 +1,9 @@
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { createServer } from 'http'
+import { JwtStrategy, ExtractJwt } from 'passport-jwt'
+import passport from 'passport'
+import { getUserById } from './controllers/user'
 
 import schema from './schema'
 
@@ -14,8 +17,32 @@ const server = new ApolloServer({
   ...schema,
   instrospection: true,
   playground: true,
-  tracing: true
+  tracing: true,
+  context: ({ req, res }) => {
+    const user = getUserFromPassport()
+
+    return { user }
+  }
 })
+
+const getUserFromPassport = () => {
+  var passportOptions = {}
+  passportOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken
+  passportOptions.secretOrKey = process.env.TOKEN_SECRET
+
+  passport.use(new JwtStrategy(passportOptions, async (jwtPayload, done) => {
+    try {
+      const user = await getUserById(jwtPayload.sub)
+      if (!user) {
+        return done(null, false)
+      }
+
+      return done(null, user)
+    } catch (error) {
+      done(error, false)
+    }
+  }))
+}
 
 server.applyMiddleware({ app })
 
