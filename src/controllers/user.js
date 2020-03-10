@@ -11,3 +11,7 @@ export const getUserById = (parent, userData) => {
 export const createUser = (parent, { userData }) => {
   return models.user.create(userData)
 }
+
+export const getCurrentUser = (parent, args, { user }) => {
+  return user
+}
