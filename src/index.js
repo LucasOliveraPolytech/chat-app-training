@@ -1,9 +1,10 @@
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { createServer } from 'http'
-import { JwtStrategy, ExtractJwt } from 'passport-jwt'
+import * as models from './models'
 import passport from 'passport'
 import { getUserById } from './controllers/user'
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 
 import schema from './schema'
 
@@ -13,36 +14,29 @@ const port = process.env.PORT || 3001
 
 const app = express()
 
+passport.use(new JwtStrategy({
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.TOKEN_SECRET
+}, async (jwtPayload, req) => {
+  const user = await getUserById(jwtPayload.sub)
+
+  req.user = user
+}))
+
+app.use(passport.initialize())
+
 const server = new ApolloServer({
   ...schema,
   instrospection: true,
   playground: true,
   tracing: true,
-  context: ({ req, res }) => {
-    const user = getUserFromPassport()
-
-    return { user }
+  context: ({ req }) => {
+    return {
+      user: req.user,
+      models
+    }
   }
 })
-
-const getUserFromPassport = () => {
-  var passportOptions = {}
-  passportOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken
-  passportOptions.secretOrKey = process.env.TOKEN_SECRET
-
-  passport.use(new JwtStrategy(passportOptions, async (jwtPayload, done) => {
-    try {
-      const user = await getUserById(jwtPayload.sub)
-      if (!user) {
-        return done(null, false)
-      }
-
-      return done(null, user)
-    } catch (error) {
-      done(error, false)
-    }
-  }))
-}
 
 server.applyMiddleware({ app })
 
