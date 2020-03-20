@@ -47,8 +47,15 @@ export default (sequelize, DataTypes) => {
     )
   }
 
+  User.login = async ({ username, password }) => {
+    const user = await User.findOne({ where: { username } })
+    if (!user || !user.passwordMatches(password)) throw new Error('Invalid username or password')
+
+    return user
+  }
+
   User.prototype.passwordMatches = function (value) {
-    return User.encryptPassword(value) === this.password
+    return User.encryptPassword(value, this.salt) === this.password
   }
 
   User.hashPasswordHook = async function (user) {
