@@ -2,9 +2,9 @@ module.exports =
 {
   development: {
     username: 'postgres',
-    password: null,
+    password: 'postgres',
     database: 'trainingDatabase',
-    host: '127.0.0.1',
+    host: 'database',
     dialect: 'postgres',
     operatorsAliases: false,
     define: {
